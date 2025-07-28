@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>House Price Predictor</title>
+  <style>
+    body {
+      background-color: #141414;
+    }
+    .container {
+      border-radius: 70px;
+      background-color: white;
+      width: 75%;
+      height: auto;
+      margin-left: 12.5%;
+      margin-top: 25px;
+      padding-bottom: 30px;
+    }
+    .container .row {
+      text-align: center;
+      padding-top: 10px;
+      font-size: 25px;
+      border-bottom: 2px solid black;
+    }
+    .container .sec_row {
+      text-align: center;
+      font-size: 22px;
+    }
+    .form_container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 20px;
+      justify-items: center;
+    }
+    .col1 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .col1 label {
+      font-size: 20px;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    .col1 input {
+      width: 300px;
+      padding: 8px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: 1px solid gray;
+    }
+    .col1 select {
+      width: 300px;
+      padding: 8px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: 1px solid gray;
+    }
+    .submit-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .submit-container button {
+      background-color: #87CEEB;
+      color: white;
+      font-size: 18px;
+      padding: 10px 25px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .submit-container button:hover {
+      background-color: #333;
+    }
+    .predit_ans {
+      text-align: center;
+      font-size: 22px;
+      color: #004080;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <h1>Welcome to Bangalore House Price Predictor</h1>
+    </div>
+    <div class="sec_row">
+      <p>Want to predict the price of a new House in Bangalore? Try filling the details below:</p>
+    </div>
+
+    <form id="priceForm" method="post" accept-charset="utf-8">
+      <div class="form_container">
+        <div class="col1">
+          <label for="location"> Select the Location:</label>
+          <select class="form-control" id="location" name="location" required="1" placeholder="Select the Location">
+              {% for location in locations %}
+                <option value="{{ location }}">{{ location }}</option>
+              {% endfor %}
+          </select>
+        </div>
+        <div class="col1">
+          <label >BHK:</label>
+          <input class="form-control" id="bhk" name="bhk"  placeholder="Select the BHK">
+        </div>
+        <div class="col1">
+          <label >Bathroom:</label>
+          <input class="form-control" id="bath" name="bath" placeholder="Select the Bathroom">
+        </div>
+        <div class="col1">
+          <label >Square Feet:</label>
+          <input class="form-control" id="sqft" name="sqft"
+                 placeholder="Select the Square Feet Area">
+        </div>
+      </div>
+
+      <div class="submit-container">
+        <button type="button"  class="form-control" onclick="send_data()" >Predict Price</button>
+      </div>
+    </form>
+
+    <div class="predit_ans">
+      <h3><span id="prediction"></span></h3>
+    </div>
+  </div>
+
+<script>
+    function form_handler(event) {
+    event.preventDefault();
+    }
+    function send_data()
+    {
+    document.querySelector('form').addEventListener("Submit",form_handler);
+
+    var fd = new FormData(document.querySelector('form'));
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('POST','/predict',true);
+    document.getElementById("prediction").innerHTML = "Wait Predicting Price!...";
+    xhr.onreadystatechange = function(){
+    if(xhr.readyState == XMLHttpRequest.DONE){
+        document.getElementById('prediction').innerHTML="Prediction: ₹"+xhr.responseText;
+    }
+    };
+    xhr.onload = function(){};
+    xhr.send(fd);
+    }
+</script>
+
+ </body>
+</html>
+
