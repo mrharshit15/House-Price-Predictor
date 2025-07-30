@@ -24,7 +24,6 @@ pypiwin32==223
 python-dateutil==2.9.0.post0
 pyttsx3==2.90
 pytz==2025.2
-pywin32==306
 regex==2024.11.6
 scikit-learn==1.7.1
 scipy==1.16.0
